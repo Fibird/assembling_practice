@@ -1,7 +1,7 @@
 # list file
-.lst
+*.lst
 # object file
-.obj
+*.obj
 # program
-.exe
-.hex
+*.exe
+*.hex
