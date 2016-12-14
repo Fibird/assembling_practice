@@ -79,8 +79,3 @@ int_proc0	proc near
 int_proc0	endp
 
 			end
-
-
-		
-
-		

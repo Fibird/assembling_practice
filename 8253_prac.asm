@@ -20,7 +20,7 @@ control8253_add equ 0e003h
 	out dx,al
 	
     mov dx,control8253_add;计数器0初始化
-	mov al,30h       ;写控制字
+	mov al,10h       ;写控制字
 	out dx,al
 	
 	mov al,10h        ;设置计数初值
