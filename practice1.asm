@@ -38,7 +38,7 @@
 		mov dx,pa_add
 		out dx,al
 		
-s:		call	Init8259
+		call	Init8259
 		call	wriintvect
 		sti
 		
@@ -66,6 +66,7 @@ wriintvect	proc near
 			mov ah,25h
 			int 21h
 			pop ds
+			ret
 wriintvect	endp
 
 int_proc0	proc near
@@ -74,7 +75,10 @@ int_proc0	proc near
 			not al
 			mov dx,pa_add
 			out dx,al
+			ret
 int_proc0	endp
+
+			end
 
 
 		
