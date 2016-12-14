@@ -1,0 +1,82 @@
+		.model tiny
+		count0_add equ 0d000h	;计时器0的地址
+		count1_add equ 0d001h
+		con8253_add equ 0d003h
+		io8259_0	equ	0e000h	;8259奇地址
+		io8259_1	equ	0e001h	;8259偶地址
+		pa_add equ 0e000h		;8255A口地址
+		pb_add equ 0e001h		;8255B口地址
+		con8255_add equ 0e003h
+		.data
+		
+		.stack
+		
+		.code
+		
+		.startup
+		;-----8253初始化设置------;
+		;初始化计数器0
+		mov dx,con8253_add
+		mov al,36h
+		out dx,al
+		mov al,56h
+		out dx,al
+		;设置计数初值
+		mov dx,count0_add
+		mov ax,1000
+		out dx,al
+		mov al,ah
+		out dx,al
+		mov dx,count1_add
+		mov al,200
+		out dx,al
+		;-----8255初始化设置------;
+		mov dx,con8255_add
+		mov al,82h
+		out dx,al
+		xor al,al
+		mov dx,pa_add
+		out dx,al
+		
+s:		call	Init8259
+		call	wriintvect
+		sti
+		
+		
+Init8259	proc near
+			mov	dx,io8259_0				
+			mov	al,13h					;设置ICW1的控制字
+			out	dx,al
+			mov	dx,io8259_1
+			mov	al,08h					;设置ICW2的控制字
+			out	dx,al
+			mov	al,09h					;设置ICW4的控制字
+			out	dx,al
+			mov	al,0feh					;设置OCW1的控制字
+			out	dx,al
+			ret
+Init8259	endp
+		
+wriintvect	proc near
+			push ds
+			mov ax,seg int_proc0
+			mov ds,ax
+			lea dx,int_proc0
+			mov al,28h
+			mov ah,25h
+			int 21h
+			pop ds
+wriintvect	endp
+
+int_proc0	proc near
+			mov dx,pb_add
+			in al,dx
+			not al
+			mov dx,pa_add
+			out dx,al
+int_proc0	endp
+
+
+		
+
+		

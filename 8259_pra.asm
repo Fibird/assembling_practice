@@ -28,7 +28,7 @@ Init8259	PROC	NEAR
 		MOV	AL,13H					;设置ICW1的控制字
 		OUT	DX,AL
 		MOV	DX,IO8259_1
-		MOV	AL,08H					;设置ICW2的控制字
+		MOV	AL,0aH					;设置ICW2的控制字
 		OUT	DX,AL
 		MOV	AL,09H					;设置ICW4的控制字
 		OUT	DX,AL
