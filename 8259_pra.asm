@@ -37,15 +37,15 @@ Init8259	PROC	NEAR
 		RET
 Init8259	ENDP
 
-WriIntver	PROC	NEAR
+WriIntver	PROC	NEAR			;设置中断向量表
 		PUSH	ES
 		MOV	AX,0
 		MOV	ES,AX
 		MOV	DI,20H
 		LEA	AX,INT_0
-		STOSW
+		STOSW						;存储中断处理子程序的起始偏移地址
 		MOV	AX,CS
-		STOSW
+		STOSW						;存储中断处理子程序的段地址
 		POP	ES
 		RET
 WriIntver	ENDP
@@ -56,7 +56,7 @@ LedDisplay	PROC	NEAR
 		AND	AL,0FH
 		MOV	Buffer,AL
 		AND	AH,0F0H
-		ROR	AH,4
+		ROR	AH,4					;循环右移四位
 		MOV	Buffer + 1,AH
 		MOV	Buffer + 2,10H		;高六位不需要显示
 		MOV	Buffer + 3,10H
@@ -73,12 +73,12 @@ INT_0:		PUSH	DX
 		PUSH	AX
 		MOV	AL,Counter
 		ADD	AL,1
-		DAA
+		DAA							;让AL以BCD码的概念进行算术运算
 		MOV	Counter,AL
 		MOV	ReDisplayFlag,1
 		MOV	DX,IO8259_0
-		MOV	AL,20H
-		OUT	DX,AL
+		MOV	AL,20H					;OCW2命令字
+		OUT	DX,AL					;送EOI命令
 		POP	AX
 		POP	DX
 		IRET
