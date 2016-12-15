@@ -38,12 +38,14 @@
 		mov dx,pa_add
 		out dx,al
 		
-		call	Init8259
+		call	init8259
 		call	wriintvect
 		sti
+s:		nop
+		jmp nop
 		
 		
-Init8259	proc near
+init8259	proc near
 			mov	dx,io8259_0				
 			mov	al,13h					;设置ICW1的控制字
 			out	dx,al
@@ -55,7 +57,7 @@ Init8259	proc near
 			mov	al,0feh					;设置OCW1的控制字
 			out	dx,al
 			ret
-Init8259	endp
+init8259	endp
 		
 wriintvect	proc near
 			push ds
