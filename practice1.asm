@@ -2,8 +2,8 @@
 		count0_add equ 388h	;计时器0的地址
 		count1_add equ 389h
 		con8253_add equ 38bh
-		io8259_0	equ	0e000h	;8259奇地址
-		io8259_1	equ	0e001h	;8259偶地址
+		io8259_0	equ	38eh	;8259奇地址
+		io8259_1	equ	38fh	;8259偶地址
 		pa_add equ 384h		;8255A口地址
 		pb_add equ 385h		;8255B口地址
 		con8255_add equ 387h
