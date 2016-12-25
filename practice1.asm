@@ -42,7 +42,7 @@
 		call	wriintvect
 		sti
 s:		nop
-		jmp nop
+		jmp s
 		
 		
 init8259	proc near
@@ -77,7 +77,9 @@ int_proc0	proc near
 			not al
 			mov dx,pa_add
 			out dx,al
-			ret
+			mov al,20h	;发出EOI指令表示中断结束
+			out 20h,al
+			iret
 int_proc0	endp
 
 			end
