@@ -1,0 +1,51 @@
+		PA_ADD 	EQU	01E0H
+		PB_ADD	EQU O1E1H
+		PC_ADD	EQU 01E2H
+		8255CON_ADD	EQU 01E3H
+		
+		.data
+		
+		.stack
+		
+		.code
+		
+START:	MOV AX,SEG DATA
+		MOV DS,AX
+		MOV SI,OFFSET DATA
+		
+		;初始化8255
+		MOV DX,8255CON_ADD
+		MOV AL,99H
+			
+		MOV BL,0
+		MOV CL,0
+GOON:	MOV AL,BL
+		MOV DX,PB_ADD
+		OUT DX,AL	
+		OR AL,80H
+		OUT DX,AL	;送ALE上升沿
+		AND AL,7FH
+        OUT DX,AL	;输出START
+        NOP
+		
+		MOV DX,PC_ADD
+PWAT： 	IN AL,DX	;读EOC状态
+        AND AL,01H
+        JZ PWAT
+		
+		MOV DX,PB_ADD
+		MOV AL,BL
+		OR AL,40H
+		OUT DX,AL	;使OE=1
+		MOV DX,PA_ADD
+		IN AL,DX
+		MOV [SI],AL
+		INC SI
+		INC BL
+		DEC CL
+		JNZ GOON
+		MOV DX,PB_ADD
+		MOV AL,0
+		OUT DX,AL
+		
+
